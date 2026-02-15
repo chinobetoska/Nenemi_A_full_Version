@@ -1,0 +1,12 @@
+# Dependencias (NUNCA las subas, son miles de archivos pesados)
+node_modules/
+
+# Variables de entorno (Contraseñas y llaves secretas)
+.env
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Logs de error
+npm-debug.log*

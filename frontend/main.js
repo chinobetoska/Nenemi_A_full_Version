@@ -1,25 +1,34 @@
 async function cargarDestinos() {
-    // Asegúrate de usar TU link de Render
-const url = 'https://nenemi-a-full-version.onrender.com/api/destinos';
+    const url = 'https://nenemi-a-full-version.onrender.com/api/destinos';
+    const galeria = document.getElementById('caja-servidor');
 
-fetch(url)
-    .then(res => res.json()) // Ahora sí recibirá un JSON y no el texto con "¡"
-    .then(datos => {
-        console.log(datos);
-        // Aquí va tu código para dibujar las tarjetas...
-        const galeria = document.getElementById('caja-servidor');
-        galeria.innerHTML = ''; // Quita el "Cargando..."
-        
+    try {
+        const res = await fetch(url);
+        const datos = await res.json();
+
+        // IMPORTANTE: Limpiamos la caja una sola vez antes del bucle
+        galeria.innerHTML = ''; 
+
         datos.forEach(lugar => {
-            galeria.innerHTML += `
+            // Creamos el HTML de la tarjeta
+            const card = `
                 <div class="card">
                     <img src="${lugar.foto}" alt="${lugar.nombre}">
-                    <h3>${lugar.nombre}</h3>
-                    <p>${lugar.estado}</p>
+                    <div class="info">
+                        <h3>${lugar.nombre}</h3>
+                        <p><strong>${lugar.estado}</strong></p>
+                        <p>${lugar.descripcion}</p>
+                    </div>
                 </div>
             `;
+            galeria.innerHTML += card;
         });
-    })
-    .catch(err => console.error("Error cargando destinos:", err));
+
+    } catch (err) {
+        console.error("Error cargando destinos:", err);
+        galeria.innerHTML = '<p>Error al cargar los datos</p>';
+    }
 }
+
+// LLAMAR A LA FUNCIÓN UNA SOLA VEZ
 cargarDestinos();

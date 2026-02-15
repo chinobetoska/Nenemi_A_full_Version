@@ -1,0 +1,17 @@
+.icon-social {
+    width: 30px;
+    height: 30px;
+    transition: transform 0.3s ease;
+    filter: brightness(0) invert(1); /* Opcional: vuelve los iconos blancos si son oscuros */
+}
+
+.icon-social:hover {
+    transform: scale(1.2);
+}
+
+/* Ajuste para el logo en el Nav si decides poner uno */
+.nav-logo {
+    height: 40px;
+    width: auto;
+    vertical-align: middle;
+}

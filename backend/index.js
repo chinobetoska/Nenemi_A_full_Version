@@ -8,7 +8,6 @@ app.use(cors());
 app.use(express.json());
 
 // 1. CONEXIÓN A LA BASE DE DATOS
-// REEMPLAZA LOS DATOS CON LOS TUYOS
 const mongoURI = 'mongodb+srv://chinobetoskas:chinobetoska@fullnenemi-db.22t4lrz.mongodb.net/?appName=FullNenemi-DB';
 
 mongoose.connect(mongoURI)
@@ -24,30 +23,40 @@ const Destino = mongoose.model('Destino', {
 });
 
 // 3. RUTAS
+
 // Ruta de bienvenida
 app.get('/', (req, res) => {
-    res.send('Servidor de FullNenemi con MongoDB funcionando');
+    res.send('Servidor de FullNenemi funcionando');
 });
 
-// Ruta para obtener destinos de la BD
-app.get('/api/seed', async (req, res) => {
-    const nuevo = new Destino({
-        nombre: "Cascadas de Hierve el Agua",
-        estado: "Oaxaca",
-        descripcion: "Vistas increíbles.",
-        foto: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=400"
-    });
-    await nuevo.save();
-    res.send("Guardado"); 
-});
-
+// RUTA PARA OBTENER DATOS (Usa esta en el main.js)
 app.get('/api/destinos', async (req, res) => {
-    const destinos = await Destino.find(); // Esto saca la LISTA de la base de datos
-    res.json(destinos); // Esto envía el JSON que el frontend sí entiende
+    try {
+        const destinos = await Destino.find();
+        res.json(destinos); // Envía la lista que el frontend espera
+    } catch (error) {
+        res.status(500).json({ error: "Error al obtener datos" });
+    }
 });
 
-// 4. CONFIGURACIÓN DEL PUERTO
+// RUTA PARA CREAR DATOS (Solo para pruebas)
+app.get('/api/seed', async (req, res) => {
+    try {
+        const nuevo = new Destino({
+            nombre: "Cascadas de Hierve el Agua",
+            estado: "Oaxaca",
+            descripcion: "Vistas increíbles y piscinas naturales.",
+            foto: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=400"
+        });
+        await nuevo.save();
+        res.send("¡Destino guardado con éxito!");
+    } catch (err) {
+        res.status(500).send("Error: " + err.message);
+    }
+});
+
+// 4. PUERTO
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+    console.log(`🚀 Servidor en puerto ${PORT}`);
 });

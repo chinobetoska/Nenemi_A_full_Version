@@ -10,9 +10,7 @@ async function cargarParaAdmin() {// Carga los destinos para el panel de adminis
     listaAdmin.innerHTML = '';
     datos.forEach(lugar => {
         // Se recorre cada destino y se agrega a la lista del panel de administracion
-        listaAdmin.innerHTML += `
-        // Se crea una tarjeta para cada destino con su informacion y un boton para eliminarlo
-            <div class="destino-card" id="card-${lugar._id}">
+        listaAdmin.innerHTML += `<div class="destino-card" id="card-${lugar._id}">
                 <img src="${lugar.foto}" alt="${lugar.nombre}">
                 <div class="destino-info">
                     <h3>${lugar.nombre}</h3>

@@ -1,5 +1,5 @@
 async function cargarDestinos() {
-    const res = await fetch('http://localhost:3000/api/destinos');
+    //const res = await fetch('http://localhost:3000/api/destinos');
     const datos = await res.json();
     
     const contenedor = document.getElementById('caja-servidor');

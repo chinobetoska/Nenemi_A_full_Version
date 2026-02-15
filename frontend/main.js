@@ -1,5 +1,5 @@
 async function cargarDestinos() {
-    //const res = await fetch('http://localhost:3000/api/destinos');
+    const res = await fetch('https://nenemi-a-full-version.onrender.com/destinos');
     const datos = await res.json();
     
     const contenedor = document.getElementById('caja-servidor');

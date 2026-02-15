@@ -9,7 +9,7 @@ app.use(express.json());
 
 // 1. CONEXIÓN A LA BASE DE DATOS
 // REEMPLAZA LOS DATOS CON LOS TUYOS
-const mongoURI = 'mongodb+srv://USUARIO:CONTRASEÑA@cluster0.mongodb.net/NenemiDB?retryWrites=true&w=majority';
+const mongoURI = 'mongodb+srv://chinobetoskas:chinobetoska@fullnenemi-db.22t4lrz.mongodb.net/?appName=FullNenemi-DB';
 
 mongoose.connect(mongoURI)
     .then(() => console.log('✅ ¡Conectado a MongoDB Atlas!'))

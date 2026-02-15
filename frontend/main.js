@@ -1,6 +1,6 @@
 async function cargarDestinos() {
     // Asegúrate de usar TU link de Render
-const url = 'https://nenemi-a-full-version.onrender.com/api/destinos';
+const url = 'https://nenemi-a-full-version.onrender.com/api/seed';
 
 fetch(url)
     .then(res => res.json()) // Aquí es donde fallaba antes porque recibía texto

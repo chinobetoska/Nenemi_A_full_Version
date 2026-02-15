@@ -36,3 +36,18 @@
     gap: 30px;
     margin: 40px 0;
 }
+
+/* En tu CSS */
+.alerta-exito {
+    color: #4E8B61;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.alerta-error {
+    color: #ff4d4d;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 10px;
+}

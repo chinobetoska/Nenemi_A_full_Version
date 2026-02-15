@@ -2,22 +2,87 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Mi Web Turística</title>
-    <style>
-    .galeria { display: flex; gap: 20px; justify-content: center; flex-wrap: wrap; }
-    .card { border: 1px solid #ddd; border-radius: 8px; width: 250px; overflow: hidden; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
-    .card img { width: 100%; height: 150px; object-fit: cover; }
-    .card-body { padding: 15px; }
-</style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nenemi - Explora México</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
-<body style="font-family: sans-serif; text-align: center; margin-top: 50px;">
-    <h1>Bienvenido a Nenemi-a</h1>
-    
-    <p id="estado-mensaje" style="color: gray;">Conectando al servidor...</p>
+<body>
 
-    <div id="caja-servidor" class="galeria">
+    <div id="nav-placeholder"></div>
+
+    <header class="hero-section">
+        <div class="pagina-contenedor">
+            <h2>Descubre la magia de México</h2>
+            <p>Encuentra los destinos más increíbles y vive aventuras inolvidables.</p>
+            <div class="eso-tilin">
+                <a href="#destinos" class="btn-destino" id="baila-tilin">Empezar aventura</a>
+            </div>
         </div>
+    </header>
 
+    <main class="pagina-contenedor">
+        
+        <section id="destinos">
+            <h2 class="seccion-titulo">Destinos Destacados</h2>
+            <div id="galeria-destinos" class="destinos-grid">
+                </div>
+        </section>
+
+        <section id="nosotros-info" class="nosotros-contenido">
+            <h3 id="color-h3-so-nos">Nuestra Misión</h3>
+            <p>En Nenemi, nos apasiona conectar a los viajeros con la esencia más pura de México, promoviendo un turismo responsable y auténtico.</p>
+            
+            <div class="valores-grid">
+                <div class="valor-card">
+                    <h4>Pasión</h4>
+                    <p>Amamos lo que hacemos y nuestra tierra.</p>
+                </div>
+                <div class="valor-card">
+                    <h4>Calidad</h4>
+                    <p>Servicios seleccionados con los mejores estándares.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="soporte-contenedor">
+            <h3 id="contacto-info-soporte">¿Necesitas ayuda?</h3>
+            <p id="p-estilos-soporte">Nuestro equipo de soporte técnico está disponible para ti.</p>
+            
+            <form class="soporte-form">
+                <div class="form-grupo">
+                    <label>Nombre</label>
+                    <input type="text" placeholder="Tu nombre">
+                </div>
+                <div class="form-grupo">
+                    <label>Asunto</label>
+                    <textarea placeholder="¿En qué podemos ayudarte?"></textarea>
+                </div>
+                <button type="submit" class="btn-enviar">Enviar Mensaje</button>
+            </form>
+        </section>
+
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        async function cargarPagina() {
+            // 1. Cargar Componentes Reutilizables
+            const navRes = await fetch('/reutilizables/nav.html');
+            document.getElementById('nav-placeholder').innerHTML = await navRes.text();
+
+            const footerRes = await fetch('/reutilizables/footer.html');
+            document.getElementById('footer-placeholder').innerHTML = await footerRes.text();
+
+            // 2. Cargar Datos de la API (Destinos)
+            // Llamamos a la función que debe estar en main.js
+            if (typeof obtenerDestinos === 'function') {
+                obtenerDestinos();
+            }
+        }
+        
+        window.onload = cargarPagina;
+    </script>
     <script src="main.js"></script>
 </body>
 </html>

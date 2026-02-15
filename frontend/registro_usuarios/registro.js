@@ -8,7 +8,7 @@ document.getElementById('form-registro').addEventListener('submit', async (e) =>
     const email = document.getElementById('reg-email').value;
     const password = document.getElementById('reg-password').value;
 
-    // VALIDACIONES FRONTEND
+    //validaciones de frontend
     if (password.length < 8) {
         mensajeP.innerText = "La contrasena debe tener al menos 8 caracteres";
         mensajeP.style.color = "#ff4d4d";
@@ -33,7 +33,7 @@ document.getElementById('form-registro').addEventListener('submit', async (e) =>
             
             // Redirigir al login después de 2 segundos
             setTimeout(() => {
-                window.location.href = "../login_usuarios/login.html";
+                window.location.href = "../index.html";
             }, 2000);
             
         } else {

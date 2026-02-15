@@ -123,6 +123,46 @@ app.post('/api/registro', async (req, res) => {
     }
 });
 
+//ruta para manejar el login de usuarios
+app.post('/api/login', async (req, res) => {
+    try {
+        const { email, password } = req.body;
+
+        //vuscar al usuario
+        const usuario = await Usuario.findOne({ email });
+        if (!usuario) {
+            return res.status(400).json({ error: "El usuario no existe" });
+        }
+
+        //comparar contrasena encriptada
+        const passwordCorrecto = await bcrypt.compare(password, usuario.password);
+        if (!passwordCorrecto) {
+            return res.status(400).json({ error: "Contraseña incorrecta" });
+        }
+
+        //responder con esito
+        res.json({ 
+            mensaje: "Login exitoso", 
+            nombre: usuario.nombre 
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: "Error en el servidor" });
+    }
+});
+
+app.post('/api/login', async (req, res) => {
+    const { email, password } = req.body;
+    const usuario = await Usuario.findOne({ email });
+
+    if (usuario && await bcrypt.compare(password, usuario.password)) {
+        // Devolvemos el nombre que está en la base de datos
+        res.json({ nombre: usuario.nombre }); 
+    } else {
+        res.status(400).json({ error: "Credenciales inválidas" });
+    }
+});
+
 //puerto de reicion de peticiones
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

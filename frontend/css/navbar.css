@@ -17,3 +17,31 @@
     position: fixed;
     background-color: rgba(0, 0, 0, 0.5);
 }
+
+.user-info-contenedor {
+    padding: 15px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 20px;
+}
+
+.user-nombre-resaltado {
+    color: var(--color-acento);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.user-modo-invitado {
+    color: #ccc;
+    font-size: 0.9rem;
+}
+
+/* Estado de los enlaces */
+.link-oculto {
+    display: none;
+}
+
+.link-logout {
+    color: var(--color-error) !important;
+    font-weight: bold;
+}

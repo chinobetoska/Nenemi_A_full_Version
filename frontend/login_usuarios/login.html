@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Iniciar Sesión - Nenemi</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <div id="nav-placeholder"></div>
+
+    <main class="pagina-contenedor">
+        <header class="titulo-nenemia">
+            <h1>Bienvenido de vuelta</h1>
+        </header>
+
+        <section class="contenedor">
+            <h2>Acceder a mi cuenta</h2>
+            <form id="form-login">
+                <div class="elemento">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="elemento">
+                    <label>Contraseña</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <input type="submit" value="Entrar" class="btn-enviar">
+            </form>
+            <p id="mensaje-login"></p>
+            
+            <div style="margin-top: 20px; text-align: center;">
+                <p style="color: white; margin-bottom: 10px;">¿No tienes cuenta?</p>
+                <a href="../registro_usuarios/registro.html" class="btn-destino">Registrarse</a>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+        // Carga de componentes reutilizables
+        async function cargarComponentes() {
+            const navRes = await fetch('../reutilizables/nav.html');
+            document.getElementById('nav-placeholder').innerHTML = await navRes.text();
+
+            const footerRes = await fetch('../reutilizables/footer.html');
+            document.getElementById('footer-placeholder').innerHTML = await footerRes.text();
+        }
+        cargarComponentes();
+    </script>
+    <script src="login.js"></script>
+</body>
+</html>

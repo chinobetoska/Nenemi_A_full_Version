@@ -28,10 +28,6 @@ async function cargarDestinos() {
                 <h3>${lugar.nombre}</h3>
                 <p><strong>${lugar.estado}</strong></p>
                 <p>${lugar.descripcion}</p>
-                <button onclick="eliminarDestino('${lugar._id}')" 
-                        style="background: #ff4d4d; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; margin-top: 10px;">
-                    Eliminar
-                </button>
             </div>
         </div>
             `;

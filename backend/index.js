@@ -7,14 +7,14 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 1. CONEXIÓN A LA BASE DE DATOS
+// conexion a MongoDB Atlas
 const mongoURI = 'mongodb+srv://chinobetoskas:chinobetoska@fullnenemi-db.22t4lrz.mongodb.net/?appName=FullNenemi-DB';
 
 mongoose.connect(mongoURI)
-    .then(() => console.log('✅ ¡Conectado a MongoDB Atlas!'))
-    .catch(err => console.error('❌ Error de conexión:', err));
+    .then(() => console.log(' ¡Conectado a MongoDB Atlas!'))
+    .catch(err => console.error(' Error de conexion:', err));
 
-// 2. MODELO DE DATOS
+// modelo de datos para destinos turisticos
 const Destino = mongoose.model('Destino', {
     nombre: String,
     estado: String,
@@ -22,24 +22,24 @@ const Destino = mongoose.model('Destino', {
     foto: String
 });
 
-// 3. RUTAS
+//rutas
 
-// Ruta de bienvenida
+//ruta de prueba para verificar que el servidor funciona (bienbenida)
 app.get('/', (req, res) => {
     res.send('Servidor de FullNenemi funcionando');
 });
 
-// RUTA PARA OBTENER DATOS (Usa esta en el main.js)
+//ruta para obtener la lista de destinos turisticos (para el frontd)
 app.get('/api/destinos', async (req, res) => {
     try {
         const destinos = await Destino.find();
-        res.json(destinos); // Envía la lista que el frontend espera
+        res.json(destinos); //envio la lista de destinos como respuesta en formato jso
     } catch (error) {
         res.status(500).json({ error: "Error al obtener datos" });
     }
 });
 
-// RUTA PARA CREAR DATOS (Solo para pruebas)
+// ruta pra crear datos (olo para pruebas)
 app.get('/api/seed', async (req, res) => {
     try {
         const nuevo = new Destino({
@@ -55,7 +55,7 @@ app.get('/api/seed', async (req, res) => {
     }
 });
 
-// 4. PUERTO
+//puerto de reicion de peticiones
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor en puerto ${PORT}`);

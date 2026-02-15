@@ -1,19 +1,23 @@
 async function cargarDestinos() {
+    // URL del endpoint en Render
     const url = 'https://nenemi-a-full-version.onrender.com/api/destinos';
+    // Elementos del DOM para mostrar resultados
     const galeria = document.getElementById('caja-servidor');
-    const mensaje = document.getElementById('estado-mensaje'); //nuevo
+    // Elemento para mostrar mensajes de estado
+    const mensaje = document.getElementById('estado-mensaje'); 
 
    try {
         const res = await fetch(url);
         const datos = await res.json();
 
         if (datos.length === 0) {
-            mensaje.innerText = "Conectado, pero la base de datos está vacía.";
+            // Si no hay datos, muestra un mensaje específico
+            mensaje.innerText = "Conectado, pero la base de datos esta vacía.";
             galeria.innerHTML = '<p>Usa /api/seed para agregar contenido</p>';
             return;
         }
 
-        mensaje.innerText = "✅ Datos cargados correctamente";
+        mensaje.innerText = "Datos cargados correctamente";
         galeria.innerHTML = ''; 
 
         datos.forEach(lugar => {
@@ -32,9 +36,9 @@ async function cargarDestinos() {
 
     } catch (err) {
         console.error("Error:", err);
-        mensaje.innerText = "❌ Error al conectar con el servidor";
+        mensaje.innerText = "Error al conectar con el servidor";
     }
 }
 
-// LLAMAR A LA FUNCIÓN UNA SOLA VEZ
+//le lama a la funcion para no hacer que se repita cada vez que se recarga la pagina
 cargarDestinos();

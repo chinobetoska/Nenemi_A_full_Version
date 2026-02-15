@@ -30,12 +30,18 @@ app.get('/', (req, res) => {
 });
 
 // Ruta para obtener destinos de la BD
-app.get('/api/destinos', async (req, res) => {
+app.get('/api/seed', async (req, res) => {
     try {
-        const destinos = await Destino.find();
-        res.json(destinos);
-    } catch (error) {
-        res.status(500).json({ error: "No se pudieron obtener los datos" });
+        const nuevo = new Destino({
+            nombre: "Cascadas de Hierve el Agua",
+            estado: "Oaxaca",
+            descripcion: "Vistas increíbles y piscinas naturales.",
+            foto: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=400"
+        });
+        await nuevo.save();
+        res.send("¡Primer destino guardado en la nube!");
+    } catch (err) {
+        res.status(500).send("Error: " + err.message);
     }
 });
 

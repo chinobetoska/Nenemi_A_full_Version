@@ -5,25 +5,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Simulamos una base de datos de destinos turísticos
-const destinos = [
-    { 
-        id: 1, 
-        nombre: "Playa del Carmen", 
-        info: "Ideal para buceo y vida nocturna.", 
-        precio: "$1500 MXN",
-        foto: "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=300"
-    },
-    { 
-        id: 2, 
-        nombre: "Chichén Itzá", 
-        info: "Una de las maravillas del mundo moderno.", 
-        precio: "$800 MXN",
-        foto: "https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=300"
-    }
-];
+// Puerto dinámico: Usa el que asigne Render o el 3000 por defecto
+const PORT = process.env.PORT || 3000;
 
-// Nueva ruta para obtener los destinos
+// Ruta principal para verificar que el servidor vive
+app.get('/', (req, res) => {
+    res.send('Servidor de FullNenemi funcionando correctamente');
+});
+
+// Ruta para obtener los destinos
 app.get('/api/destinos', (req, res) => {
     const destinos = [
         { 
@@ -42,4 +32,9 @@ app.get('/api/destinos', (req, res) => {
         }
     ];
     res.json(destinos);
+});
+
+// ¡IMPORTANTE! Esto es lo que hace que el servidor arranque
+app.listen(PORT, () => {
+    console.log(`Servidor corriendo en el puerto ${PORT}`);
 });

@@ -55,6 +55,17 @@ app.get('/api/seed', async (req, res) => {
     }
 });
 
+//ruta para recibir datos desde el frontend y guardarlos en la base de datos (para el formulario)
+app.post('/api/destinos', async (req, res) => {
+    try {
+        const nuevoDestino = new Destino(req.body); // Recibe nombre, estado, descripcion, foto
+        await nuevoDestino.save();
+        res.status(201).json({ mensaje: "Destino guardado con éxito" });
+    } catch (error) {
+        res.status(400).json({ error: "Error al guardar" });
+    }
+});
+
 //puerto de reicion de peticiones
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

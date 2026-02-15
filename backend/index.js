@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
+const bcrypt = require('bcrypt');
 
 // Middlewares
 app.use(cors());
@@ -21,6 +22,22 @@ const Destino = mongoose.model('Destino', {
     descripcion: String,
     foto: String
 });
+
+//modelo de datos para usuarios (para el sistema de autenticacion)
+const usuarioSchema = new mongoose.Schema({
+    nombre: { type: String, required: [true, 'El nombre es obligatorio'] },
+    email: { 
+        type: String, 
+        required: [true, 'El email es obligatorio'], 
+        unique: true,
+        lowercase: true,
+        trim: true
+    },
+    password: { type: String, required: [true, 'La contraseña es obligatoria'] },
+    fechaCreacion: { type: Date, default: Date.now }
+});
+
+const Usuario = mongoose.model('Usuario', usuarioSchema);
 
 //rutas
 
@@ -74,6 +91,35 @@ app.delete('/api/destinos/:id', async (req, res) => {
         res.json({ mensaje: "Destino eliminado correctamente" });
     } catch (error) {
         res.status(500).json({ error: "No se pudo eliminar el destino" });
+    }
+});
+
+app.post('/api/registro', async (req, res) => {
+    try {
+        const { nombre, email, password } = req.body;
+
+        //verificar si el usuario ya existe
+        const existe = await Usuario.findOne({ email });
+        if (existe) {
+            return res.status(400).json({ error: "Este correo ya está registrado" });
+        }
+
+        //encriptar la contraseña (Hashing)
+        const salt = await bcrypt.genSalt(10);
+        const passwordHash = await bcrypt.hash(password, salt);
+
+        //guardar usuario con la clave secreta
+        const nuevoUsuario = new Usuario({
+            nombre,
+            email,
+            password: passwordHash
+        });
+
+        await nuevoUsuario.save();
+        res.status(201).json({ mensaje: "¡Cuenta creada exitosamente!" });
+//respuesta de exito
+    } catch (error) {
+        res.status(500).json({ error: "Error interno del servidor" });
     }
 });
 

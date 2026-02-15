@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro - Nenemi</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <div class="pagina-contenedor">
+        <header class="titulo-nenemia">
+            <h1>Únete a Nenemi</h1>
+        </header>
+
+        <section class="contenedor">
+            <h2>Crear Cuenta</h2>
+            <form id="form-registro">
+                <div class="elemento">
+                    <label>Nombre Completo</label>
+                    <input type="text" id="reg-nombre" required>
+                </div>
+                <div class="elemento">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="reg-email" required>
+                </div>
+                <div class="elemento">
+                    <label>Contraseña</label>
+                    <input type="password" id="reg-password" required>
+                </div>
+                <input type="submit" value="Registrarse" class="btn-enviar" minlength="8">
+            </form>
+            <p id="mensaje-registro"></p>
+            <div class="general">
+                <a href="../index.html" class="btn-destino">Volver al inicio</a>
+            </div>
+        </section>
+    </div>
+
+    <script src="registro.js"></script>
+</body>
+</html>

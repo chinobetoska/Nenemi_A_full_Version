@@ -16,6 +16,11 @@
     align-items: center; /* Centra los hijos horizontalmente */
 }
 
+.general{
+    margin-top: 20px; 
+    text-align: center;
+}
+
 #form-destino {
     width: 100%; /* El formulario ocupa todo el ancho del contenedor */
 }

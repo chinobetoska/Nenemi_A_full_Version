@@ -1,0 +1,37 @@
+/* animations.css */
+
+/* 1. Zoom suave a las imágenes de los destinos */
+.destino-card:hover img, .destino-grande:hover img {
+    transform: scale(1.1);
+    transition: transform 0.5s ease;
+}
+
+/* 2. Elevación de la tarjeta y sombra más profunda */
+.destino-card, .destino-grande, .paquete-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.destino-card:hover, .paquete-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* 3. Brillo en los botones al pasar el mouse */
+.btn-destino, .btn-enviar {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-destino:active {
+    transform: scale(0.95);
+}
+
+/* 4. Aparecer suave (Fade In) para cuando cargan los datos */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.destino-card {
+    animation: fadeIn 0.6s ease forwards;
+}

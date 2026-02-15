@@ -1,0 +1,10 @@
+/* style.css */
+@import "reset.css";      
+@import "variables.css"; 
+@import "typography.css";
+@import "layout.css";     
+@import "navbar.css";    
+@import "buttons.css";
+@import "cards.css";
+@import "footer.css";
+@import "animations.css";

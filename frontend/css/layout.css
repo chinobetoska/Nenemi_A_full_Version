@@ -1,0 +1,20 @@
+.contenedor {
+    margin: 50px auto;
+    width: 400px;
+    padding: 30px;
+    background: var(--color-negro-suave);
+    border-radius: 10px;
+}
+
+.pagina-contenedor {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.destinos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 30px;
+    margin: 40px 0;
+}

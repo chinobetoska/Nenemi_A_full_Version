@@ -2,53 +2,42 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Panel de Administrador - Nenemi-a</title>
-    <link rel="stylesheet" href="style.css"> </head>
+    <title>Panel Admin - Nenemi</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
 <body>
-    <h1>Agregar Nuevo Destino</h1>
-    <form id="form-destino" style="max-width: 400px; margin: auto; display: flex; flex-direction: column; gap: 10px;">
-        <input type="text" id="nombre" placeholder="Nombre del lugar" required>
-        <input type="text" id="estado" placeholder="Estado (ej. Chiapas)" required>
-        <textarea id="descripcion" placeholder="Descripción breve" required></textarea>
-        <input type="url" id="foto" placeholder="Link de la imagen (URL)" required>
-        <button type="submit" style="background: green; color: white; padding: 10px; cursor: pointer;">Guardar Destino</button>
-    </form>
+    <div class="pagina-contenedor">
+        <header class="titulo-nenemia">
+            <h1>Administración Nenemi</h1>
+        </header>
 
-    <p id="mensaje"></p>
-    <br>
-    <a href="index.html">Ver pagina principal</a>
+        <section class="contenedor">
+            <h2>Nuevo Destino</h2>
+            <form id="form-destino">
+                <div class="elemento">
+                    <label>Nombre</label>
+                    <input type="text" id="nombre" required>
+                </div>
+                <div class="elemento">
+                    <label>Estado</label>
+                    <input type="text" id="estado" required>
+                </div>
+                <div class="elemento">
+                    <label>Descripción</label>
+                    <input type="text" id="descripcion" required>
+                </div>
+                <div class="elemento">
+                    <label>URL Foto</label>
+                    <input type="url" id="foto" required>
+                </div>
+                <input type="submit" value="Guardar" class="btn-enviar">
+            </form>
+            <p id="mensaje"></p>
+        </section>
 
-    <script>
-        const formulario = document.getElementById('form-destino');
-        formulario.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const nuevoDato = {
-                nombre: document.getElementById('nombre').value,
-                estado: document.getElementById('estado').value,
-                descripcion: document.getElementById('descripcion').value,
-                foto: document.getElementById('foto').value
-            };
-
-            const res = await fetch('https://nenemi-a-full-version.onrender.com/api/destinos', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(nuevoDato)
-            });
-
-            if(res.ok) {
-                document.getElementById('mensaje').innerText = "¡Destino agregado!";
-                formulario.reset();
-            } else {
-                document.getElementById('mensaje').innerText = "Error al guardar";
-            }
-        });
-    </script>
-    <hr>
-<h2>Gestionar Destinos Existentes</h2>
-<div id="lista-admin">
+        <h2 class="seccion-titulo">Gestión de Destinos</h2>
+        <div id="lista-admin" class="destinos-grid"></div>
     </div>
-
-<script src="admin.js"></script>
+    <script src="admin.js"></script>
 </body>
 </html>

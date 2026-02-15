@@ -1,0 +1,24 @@
+.destino-card, .destino-grande {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--border-radius-std);
+    box-shadow: var(--shadow-standard);
+}
+
+.destino-card {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: var(--border-radius-std);
+    overflow: hidden;
+    box-shadow: var(--shadow-standard);
+}
+.destino-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+.destino-info {
+    padding: 20px;
+}
+.destino-info h3 {
+    color: var(--color-primario);
+    margin-bottom: 10px;
+}

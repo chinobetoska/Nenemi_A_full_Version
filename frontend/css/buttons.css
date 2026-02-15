@@ -1,0 +1,38 @@
+.btn-destino, #boton-inicio-de-sesion, .btn-enviar {
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+}
+.btn-enviar {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #4E8B61, #3A6D4A);
+    color: var(--color-blanco);
+    border: none;
+    border-radius: 10px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+.btn-destino {
+    display: inline-block;
+    padding: 10px 20px;
+    background: var(--color-fondo-gradiente);
+    color: var(--color-blanco);
+    border-radius: 25px;
+    font-weight: bold;
+    border: 2px solid transparent;
+    text-align: center;
+}
+.btn-eliminar {
+    background: var(--color-error);
+    color: var(--color-blanco);
+    border: none;
+    padding: 10px;
+    width: 100%;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}

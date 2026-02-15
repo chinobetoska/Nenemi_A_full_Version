@@ -1,0 +1,25 @@
+:root {
+    /* Paleta Principal */
+   
+    --color-fondo-gradiente: linear-gradient(#F6B93B, #C97A40);
+    --color-primario: #8B4A23;
+    --color-secundario: #C97A40;
+    --color-acento: #F6B93B;
+    --color-exito: #4E8B61;
+    --color-error: #B84E2C;
+    --color-blanco: #FEFCF7;
+    --color-gris-oscuro: #5E5E5E;
+    --color-negro-suave: rgba(0, 0, 0, 0.1);
+    --shadow-standard: 0 5px 15px rgba(0, 0, 0, 0.3);
+    --border-radius-std: 15px;
+
+    
+    /* Textos */
+    --color-blanco: #FEFCF7;
+    --color-gris-oscuro: #5E5E5E;
+    --color-negro-suave: rgba(0, 0, 0, 0.1);
+    
+    /* Sombras y Bordes */
+    --shadow-standard: 0 5px 15px rgba(0, 0, 0, 0.3);
+    --border-radius-std: 15px;
+}

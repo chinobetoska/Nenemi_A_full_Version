@@ -7,24 +7,50 @@ async function cargarParaAdmin() {
 
     listaAdmin.innerHTML = '';
     datos.forEach(lugar => {
+        // Todo el diseño viene de las clases CSS en cards.css y buttons.css
         listaAdmin.innerHTML += `
-            <div style="border-bottom: 1px solid #ccc; padding: 10px; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                    <strong>${lugar.nombre}</strong> - ${lugar.estado}
+            <div class="destino-card" id="card-${lugar._id}">
+                <img src="${lugar.foto}" alt="${lugar.nombre}">
+                <div class="destino-info">
+                    <h3>${lugar.nombre}</h3>
+                    <p>${lugar.estado}</p>
+                    <button onclick="eliminarDestino('${lugar._id}')" class="btn-eliminar">
+                        Eliminar
+                    </button>
                 </div>
-                <button onclick="eliminarDestino('${lugar._id}')" style="background: red; color: white; border: none; padding: 5px; cursor: pointer;">
-                    Eliminar
-                </button>
             </div>
         `;
     });
 }
 
 async function eliminarDestino(id) {
-    if (confirm("¿Seguro que quieres borrar este destino?")) {
+    if (confirm("¿Eliminar este destino?")) {
         await fetch(`${url}/${id}`, { method: 'DELETE' });
-        cargarParaAdmin(); // Recargamos la lista para ver que ya no está
+        cargarParaAdmin();
     }
 }
+
+// Lógica del formulario
+document.getElementById('form-destino').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const nuevoDato = {
+        nombre: document.getElementById('nombre').value,
+        estado: document.getElementById('estado').value,
+        descripcion: document.getElementById('descripcion').value,
+        foto: document.getElementById('foto').value
+    };
+
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(nuevoDato)
+    });
+
+    if(res.ok) {
+        document.getElementById('mensaje').innerText = "Guardado con éxito";
+        document.getElementById('form-destino').reset();
+        cargarParaAdmin();
+    }
+});
 
 cargarParaAdmin();

@@ -1,0 +1,28 @@
+body {
+    font-family: sans-serif;
+}
+
+.titulo-nenemia h1 {
+    font-size: xx-large;
+    margin-top: 20px;
+    text-align: center;
+    color: var(--color-blanco);
+}
+.seccion-titulo {
+    text-align: center;
+    color: var(--color-blanco);
+    font-size: 2.5em;
+    margin: 40px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+.contenedor h2 {
+    margin: 0 0 30px;
+    font-size: x-large;
+    text-align: center;
+    color: var(--color-gris-oscuro);
+}
+.contenedor .elemento label {
+    color: var(--color-blanco);
+    font-size: larger;
+    display: block;
+}

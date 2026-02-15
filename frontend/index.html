@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nenemi - Explora México</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/x-icon" href="img/icono-alebrige.png">
+    <link rel="icon" type="image/x-icon" href="../img/icono-alebrige.png">
 </head>
 <body>
 
@@ -69,10 +69,10 @@
     <script>
         async function cargarPagina() {
             // 1. Cargar Componentes Reutilizables
-            const navRes = await fetch('/reutilizables/nav.html');
+            const navRes = await fetch('../reutilizables/nav.html');
             document.getElementById('nav-placeholder').innerHTML = await navRes.text();
 
-            const footerRes = await fetch('/reutilizables/footer.html');
+            const footerRes = await fetch('../reutilizables/footer.html');
             document.getElementById('footer-placeholder').innerHTML = await footerRes.text();
 
             // 2. Cargar Datos de la API (Destinos)

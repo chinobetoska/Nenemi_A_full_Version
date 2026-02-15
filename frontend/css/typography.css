@@ -26,6 +26,14 @@ body {
     font-size: larger;
     display: block;
 }
+div-registro {
+    margin-top: 20px; 
+    text-align: center;
+}
+div-p{
+    color: white; 
+    margin-bottom: 10px;
+}
 
 /* ESTILO ORIGINAL DE TUS INPUTS */
 .contenedor .elemento input {

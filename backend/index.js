@@ -31,18 +31,19 @@ app.get('/', (req, res) => {
 
 // Ruta para obtener destinos de la BD
 app.get('/api/seed', async (req, res) => {
-    try {
-        const nuevo = new Destino({
-            nombre: "Cascadas de Hierve el Agua",
-            estado: "Oaxaca",
-            descripcion: "Vistas increíbles y piscinas naturales.",
-            foto: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=400"
-        });
-        await nuevo.save();
-        res.send("¡Primer destino guardado en la nube!");
-    } catch (err) {
-        res.status(500).send("Error: " + err.message);
-    }
+    const nuevo = new Destino({
+        nombre: "Cascadas de Hierve el Agua",
+        estado: "Oaxaca",
+        descripcion: "Vistas increíbles.",
+        foto: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=400"
+    });
+    await nuevo.save();
+    res.send("Guardado"); 
+});
+
+app.get('/api/destinos', async (req, res) => {
+    const destinos = await Destino.find(); // Esto saca la LISTA de la base de datos
+    res.json(destinos); // Esto envía el JSON que el frontend sí entiende
 });
 
 // 4. CONFIGURACIÓN DEL PUERTO

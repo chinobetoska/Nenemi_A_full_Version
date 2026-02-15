@@ -1,9 +1,9 @@
 async function cargarDestinos() {
     // Asegúrate de usar TU link de Render
-const url = 'https://nenemi-a-full-version.onrender.com/api/seed';
+const url = 'https://nenemi-a-full-version.onrender.com/api/destinos';
 
 fetch(url)
-    .then(res => res.json()) // Aquí es donde fallaba antes porque recibía texto
+    .then(res => res.json()) // Ahora sí recibirá un JSON y no el texto con "¡"
     .then(datos => {
         console.log(datos);
         // Aquí va tu código para dibujar las tarjetas...

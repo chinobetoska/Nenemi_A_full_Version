@@ -66,6 +66,17 @@ app.post('/api/destinos', async (req, res) => {
     }
 });
 
+//ruta para eliminar un destino por su id (para el admin)
+app.delete('/api/destinos/:id', async (req, res) => {
+    try {
+        const id = req.params.id;
+        await Destino.findByIdAndDelete(id);
+        res.json({ mensaje: "Destino eliminado correctamente" });
+    } catch (error) {
+        res.status(500).json({ error: "No se pudo eliminar el destino" });
+    }
+});
+
 //puerto de reicion de peticiones
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

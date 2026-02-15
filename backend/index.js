@@ -1,40 +1,46 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const app = express();
 
+// Middlewares
 app.use(cors());
 app.use(express.json());
 
-// Puerto dinámico: Usa el que asigne Render o el 3000 por defecto
-const PORT = process.env.PORT || 3000;
+// 1. CONEXIÓN A LA BASE DE DATOS
+// REEMPLAZA LOS DATOS CON LOS TUYOS
+const mongoURI = 'mongodb+srv://USUARIO:CONTRASEÑA@cluster0.mongodb.net/NenemiDB?retryWrites=true&w=majority';
 
-// Ruta principal para verificar que el servidor vive
+mongoose.connect(mongoURI)
+    .then(() => console.log('✅ ¡Conectado a MongoDB Atlas!'))
+    .catch(err => console.error('❌ Error de conexión:', err));
+
+// 2. MODELO DE DATOS
+const Destino = mongoose.model('Destino', {
+    nombre: String,
+    estado: String,
+    descripcion: String,
+    foto: String
+});
+
+// 3. RUTAS
+// Ruta de bienvenida
 app.get('/', (req, res) => {
-    res.send('Servidor de FullNenemi funcionando correctamente');
+    res.send('Servidor de FullNenemi con MongoDB funcionando');
 });
 
-// Ruta para obtener los destinos
-app.get('/api/destinos', (req, res) => {
-    const destinos = [
-        { 
-            id: 1, 
-            nombre: "Cascadas de Hierve el Agua", 
-            estado: "Oaxaca",
-            descripcion: "Cascadas petrificadas con vistas increíbles.",
-            foto: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=400"
-        },
-        { 
-            id: 2, 
-            nombre: "Cenote Dos Ojos", 
-            estado: "Quintana Roo",
-            descripcion: "Un sistema de cuevas inundadas para buceo.",
-            foto: "https://images.unsplash.com/photo-1504730655501-24c39ac53f0e?w=400"
-        }
-    ];
-    res.json(destinos);
+// Ruta para obtener destinos de la BD
+app.get('/api/destinos', async (req, res) => {
+    try {
+        const destinos = await Destino.find();
+        res.json(destinos);
+    } catch (error) {
+        res.status(500).json({ error: "No se pudieron obtener los datos" });
+    }
 });
 
-// ¡IMPORTANTE! Esto es lo que hace que el servidor arranque
+// 4. CONFIGURACIÓN DEL PUERTO
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
+    console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
 });

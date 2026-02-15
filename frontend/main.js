@@ -1,5 +1,5 @@
 async function cargarDestinos() {
-    const res = await fetch('https://nenemi-a-full-version.onrender.com/api/destinos');
+    const res = await fetch('https://nenemi-a-full-version.onrender.com/api/seed');
     const datos = await res.json();
     
     const contenedor = document.getElementById('caja-servidor');

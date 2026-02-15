@@ -47,20 +47,20 @@ async function cargarDestinos() {
 //le lama a la funcion para no hacer que se repita cada vez que se recarga la pagina
 cargarDestinos();
 
-async function eliminarDestino(id) {
-    if (confirm("¿Estás seguro de que quieres eliminar este destino?")) {
-        try {
-            const res = await fetch(`https://nenemi-a-full-version.onrender.com/api/destinos/${id}`, {
-                method: 'DELETE'
-            });
+//async function eliminarDestino(id) {
+    //if (confirm("¿Estás seguro de que quieres eliminar este destino?")) {
+      //  try {
+        //    const res = await fetch(`https://nenemi-a-full-version.onrender.com/api/destinos/${id}`, {
+          //      method: 'DELETE'
+            //});
 
-            if (res.ok) {
-                // Si el servidor lo borró, quitamos la tarjeta de la pantalla
-                document.getElementById(`card-${id}`).remove();
-                alert("Destino eliminado");
-            }
-        } catch (err) {
-            console.error("Error al eliminar:", err);
-        }
-    }
-}
+      //      if (res.ok) {
+            // Si el servidor lo borró, quitamos la tarjeta de la pantalla
+      //          document.getElementById(`card-${id}`).remove();
+    //            alert("Destino eliminado");
+        //    }
+        //} catch (err) {
+          //  console.error("Error al eliminar:", err);
+        //}
+    //}
+//}

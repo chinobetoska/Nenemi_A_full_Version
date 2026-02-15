@@ -16,7 +16,7 @@
 
     <p id="mensaje"></p>
     <br>
-    <a href="index.html">Ver página principal</a>
+    <a href="index.html">Ver pagina principal</a>
 
     <script>
         const formulario = document.getElementById('form-destino');
@@ -37,12 +37,18 @@
             });
 
             if(res.ok) {
-                document.getElementById('mensaje').innerText = "✅ ¡Destino agregado!";
+                document.getElementById('mensaje').innerText = "¡Destino agregado!";
                 formulario.reset();
             } else {
-                document.getElementById('mensaje').innerText = "❌ Error al guardar";
+                document.getElementById('mensaje').innerText = "Error al guardar";
             }
         });
     </script>
+    <hr>
+<h2>Gestionar Destinos Existentes</h2>
+<div id="lista-admin">
+    </div>
+
+<script src="admin.js"></script>
 </body>
 </html>

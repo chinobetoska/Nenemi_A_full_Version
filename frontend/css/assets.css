@@ -3,7 +3,7 @@
     height: 30px;
     transition: transform 0.3s ease;
     filter: brightness(0) invert(1); /* Opcional: vuelve los iconos blancos si son oscuros */
-}
+}/* Efecto hover para los iconos sociales */
 
 .icon-social:hover {
     transform: scale(1.2);

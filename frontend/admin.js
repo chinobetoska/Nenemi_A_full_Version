@@ -1,14 +1,17 @@
 const url = 'https://nenemi-a-full-version.onrender.com/api/destinos';
+//const url = 'http://localhost:3000/api/destinos'; // URL del backend para desarrollo local (solo usar si el backend se ejecuta localmente)
 
-async function cargarParaAdmin() {
+async function cargarParaAdmin() {// Carga los destinos para el panel de administracion
     const listaAdmin = document.getElementById('lista-admin');
     const res = await fetch(url);
+    // Se obtiene la lista de destinos desde el backend
     const datos = await res.json();
 
     listaAdmin.innerHTML = '';
     datos.forEach(lugar => {
-        // Todo el diseño viene de las clases CSS en cards.css y buttons.css
+        // Se recorre cada destino y se agrega a la lista del panel de administracion
         listaAdmin.innerHTML += `
+        // Se crea una tarjeta para cada destino con su informacion y un boton para eliminarlo
             <div class="destino-card" id="card-${lugar._id}">
                 <img src="${lugar.foto}" alt="${lugar.nombre}">
                 <div class="destino-info">
@@ -22,31 +25,33 @@ async function cargarParaAdmin() {
         `;
     });
 }
-
+// funcion para eliminar un destino
 async function eliminarDestino(id) {
+    // Se muestra una confirmacion antes de eliminar el destino
     if (confirm("¿Eliminar este destino?")) {
         await fetch(`${url}/${id}`, { method: 'DELETE' });
         cargarParaAdmin();
     }
 }
 
-// Lógica del formulario
+// Logica del formulario
 document.getElementById('form-destino').addEventListener('submit', async (e) => {
     e.preventDefault();
     const nuevoDato = {
+        // Se obtiene la informacion del formulario para crear un nuevo destino
         nombre: document.getElementById('nombre').value,
         estado: document.getElementById('estado').value,
         descripcion: document.getElementById('descripcion').value,
         foto: document.getElementById('foto').value
     };
-
+// Se envia el nuevo destino al backend para ser guardado
     const res = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(nuevoDato)
     });
 
-    if(res.ok) {
+    if(res.ok) {// Si la respuesta es correcta, se muestra un mensaje de exito, se resetea el formulario y se recarga la lista de destinos
         document.getElementById('mensaje').innerText = "Guardado con éxito";
         document.getElementById('form-destino').reset();
         cargarParaAdmin();

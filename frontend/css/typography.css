@@ -26,3 +26,20 @@ body {
     font-size: larger;
     display: block;
 }
+
+/* ESTILO ORIGINAL DE TUS INPUTS */
+.contenedor .elemento input {
+    width: 100%;
+    padding: 10px 0;
+    color: #000; /* Texto negro para que se lea bien */
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-blanco);
+    font-size: larger;
+    outline: none;
+}
+
+/* Cambio de color cuando escribes */
+.contenedor .elemento input:focus {
+    border-bottom: 2px solid var(--color-acento);
+}

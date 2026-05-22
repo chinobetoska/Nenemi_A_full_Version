@@ -1,5 +1,6 @@
 {
-  "dependencies": {
-    "bcrypt": "^6.0.0"
-  }
+  "name": "nenemi",
+  "version": "1.0.0",
+  "description": "Plataforma de turismo cultural mexicano",
+  "private": true
 }

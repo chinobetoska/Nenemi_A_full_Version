@@ -48,42 +48,34 @@
         <section class="soporte-contenedor">
             <h3 id="contacto-info-soporte">¿Necesitas ayuda?</h3>
             <p id="p-estilos-soporte">Nuestro equipo de soporte técnico está disponible para ti.</p>
-            
-            <form class="soporte-form">
+
+            <form class="soporte-form" id="form-soporte">
                 <div class="form-grupo">
                     <label>Nombre</label>
-                    <input type="text" placeholder="Tu nombre">
+                    <input type="text" id="soporte-nombre" placeholder="Tu nombre" required>
                 </div>
                 <div class="form-grupo">
                     <label>Asunto</label>
-                    <textarea placeholder="¿En qué podemos ayudarte?"></textarea>
+                    <textarea id="soporte-asunto" placeholder="¿En qué podemos ayudarte?" required></textarea>
                 </div>
                 <button type="submit" class="btn-enviar">Enviar Mensaje</button>
             </form>
+            <p id="mensaje-soporte"></p>
         </section>
 
     </main>
 
     <div id="footer-placeholder"></div>
 
-    <script>
-        async function cargarPagina() {
-            // 1. Cargar Componentes Reutilizables
-            const navRes = await fetch('../reutilizables/nav.html');
-            document.getElementById('nav-placeholder').innerHTML = await navRes.text();
-
-            const footerRes = await fetch('../reutilizables/footer.html');
-            document.getElementById('footer-placeholder').innerHTML = await footerRes.text();
-
-            // 2. Cargar Datos de la API (Destinos)
-            // Llamamos a la función que debe estar en main.js
-            if (typeof obtenerDestinos === 'function') {
-                obtenerDestinos();
-            }
-        }
-        
-        window.onload = cargarPagina;
-    </script>
     <script src="main.js"></script>
+    <script>
+        document.getElementById('form-soporte').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const msg = document.getElementById('mensaje-soporte');
+            msg.innerText = '✅ ¡Mensaje recibido! Te contactaremos pronto.';
+            msg.classList.add('alerta-exito');
+            this.reset();
+        });
+    </script>
 </body>
 </html>

@@ -2,22 +2,30 @@ const urlRegistro = 'https://nenemi-a-full-version.onrender.com/api/registro';
 
 document.getElementById('form-registro').addEventListener('submit', async (e) => {
     e.preventDefault();
-    
+
     const mensajeP = document.getElementById('mensaje-registro');
     const nombre = document.getElementById('reg-nombre').value;
     const email = document.getElementById('reg-email').value;
     const password = document.getElementById('reg-password').value;
+    const passwordConfirm = document.getElementById('reg-password-confirm').value;
 
-    //validaciones de frontend
+    mensajeP.classList.remove('alerta-exito', 'alerta-error');
+
     if (password.length < 8) {
-        mensajeP.innerText = "La contrasena debe tener al menos 8 caracteres";
-        mensajeP.style.color = "#ff4d4d";
+        mensajeP.innerText = "La contraseña debe tener al menos 8 caracteres";
+        mensajeP.classList.add('alerta-error');
+        return;
+    }
+
+    if (password !== passwordConfirm) {
+        mensajeP.innerText = "Las contraseñas no coinciden";
+        mensajeP.classList.add('alerta-error');
         return;
     }
 
     try {
         mensajeP.innerText = "Procesando registro...";
-        
+
         const res = await fetch(urlRegistro, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -28,19 +36,19 @@ document.getElementById('form-registro').addEventListener('submit', async (e) =>
 
         if (res.ok) {
             mensajeP.innerText = "✅ " + data.mensaje;
-            mensajeP.style.color = "#4E8B61";
+            mensajeP.classList.add('alerta-exito');
             document.getElementById('form-registro').reset();
-            
-            // Redirigir al login después de 2 segundos
+
             setTimeout(() => {
-                window.location.href = "../index.html";
+                window.location.href = "../login_usuarios/login.html";
             }, 2000);
-            
+
         } else {
             mensajeP.innerText = "❌ " + data.error;
-            mensajeP.style.color = "#ff4d4d";
+            mensajeP.classList.add('alerta-error');
         }
     } catch (error) {
-        mensajeP.innerText = "Error de conexión con el servidor";
+        mensajeP.innerText = "❌ Error de conexión con el servidor";
+        mensajeP.classList.add('alerta-error');
     }
 });

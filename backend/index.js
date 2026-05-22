@@ -6,10 +6,12 @@ const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 
 const app = express();
 
 // Middlewares
+app.use(helmet());
 app.use(cors({ origin: process.env.CORS_ORIGIN }));
 app.use(express.json());
 

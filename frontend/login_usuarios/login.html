@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Iniciar Sesión - Nenemi</title>
     <link rel="stylesheet" href="../css/style.css">
     <link rel="icon" type="image/x-icon" href="../img/icono-alebrige.png">
@@ -40,9 +41,8 @@
     <div id="footer-placeholder"></div>
 
     <script>
-        // Carga de componentes reutilizables
         async function cargarComponentes() {
-            const navRes = await fetch('../reutilizables/nav.html');
+            const navRes = await fetch('../reutilizables/nav_usuario.html');
             document.getElementById('nav-placeholder').innerHTML = await navRes.text();
 
             const footerRes = await fetch('../reutilizables/footer.html');

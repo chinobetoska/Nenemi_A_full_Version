@@ -1,170 +1,184 @@
+require('dotenv').config();
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const app = express();
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const rateLimit = require('express-rate-limit');
+
+const app = express();
 
 // Middlewares
-app.use(cors());
+app.use(cors({ origin: process.env.CORS_ORIGIN }));
 app.use(express.json());
 
-// conexion a MongoDB Atlas
-const mongoURI = 'mongodb+srv://chinobetoskas:chinobetoska@fullnenemi-db.22t4lrz.mongodb.net/?appName=FullNenemi-DB';
+// Rate limiting para rutas de autenticación
+const authLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 10,
+    message: { error: 'Demasiados intentos. Intenta de nuevo en 15 minutos.' }
+});
 
-mongoose.connect(mongoURI)
-    .then(() => console.log(' ¡Conectado a MongoDB Atlas!'))
-    .catch(err => console.error(' Error de conexion:', err));
+// Conexión a MongoDB Atlas
+mongoose.connect(process.env.MONGO_URI)
+    .then(() => console.log('¡Conectado a MongoDB Atlas!'))
+    .catch(err => console.error('Error de conexion:', err));
 
-// modelo de datos para destinos turisticos
-const Destino = mongoose.model('Destino', {
+// Modelo de destinos turísticos
+const Destino = mongoose.model('Destino', new mongoose.Schema({
     nombre: String,
     estado: String,
     descripcion: String,
     foto: String
-});
+}));
 
-//modelo de datos para usuarios (para el sistema de autenticacion)
+// Modelo de usuarios
 const usuarioSchema = new mongoose.Schema({
     nombre: { type: String, required: [true, 'El nombre es obligatorio'] },
-    email: { 
-        type: String, 
-        required: [true, 'El email es obligatorio'], 
+    email: {
+        type: String,
+        required: [true, 'El email es obligatorio'],
         unique: true,
         lowercase: true,
         trim: true
     },
     password: { type: String, required: [true, 'La contraseña es obligatoria'] },
+    rol: { type: String, enum: ['usuario', 'admin'], default: 'usuario' },
     fechaCreacion: { type: Date, default: Date.now }
 });
 
 const Usuario = mongoose.model('Usuario', usuarioSchema);
 
-//rutas
+// Middleware de autenticación admin
+function verificarAdmin(req, res, next) {
+    const authHeader = req.headers.authorization;
+    if (!authHeader) return res.status(401).json({ error: 'Token requerido' });
+    const token = authHeader.split(' ')[1];
+    try {
+        const payload = jwt.verify(token, process.env.JWT_SECRET);
+        if (payload.rol !== 'admin') return res.status(403).json({ error: 'Sin permisos de administrador' });
+        req.usuario = payload;
+        next();
+    } catch {
+        res.status(401).json({ error: 'Token inválido o expirado' });
+    }
+}
 
-//ruta de prueba para verificar que el servidor funciona (bienbenida)
+// ── Rutas ────────────────────────────────────────────────
+
 app.get('/', (req, res) => {
     res.send('Servidor de FullNenemi funcionando');
 });
 
-//ruta para obtener la lista de destinos turisticos (para el frontd)
+// Obtener lista de destinos (pública)
 app.get('/api/destinos', async (req, res) => {
     try {
         const destinos = await Destino.find();
-        res.json(destinos); //envio la lista de destinos como respuesta en formato jso
+        res.json(destinos);
     } catch (error) {
-        res.status(500).json({ error: "Error al obtener datos" });
+        res.status(500).json({ error: 'Error al obtener datos' });
     }
 });
 
-// ruta pra crear datos (olo para pruebas)
-app.get('/api/seed', async (req, res) => {
+// Crear destino (solo admin)
+app.post('/api/destinos', verificarAdmin, async (req, res) => {
     try {
-        const nuevo = new Destino({
-            nombre: "Cascadas de Hierve el Agua",
-            estado: "Oaxaca",
-            descripcion: "Vistas increíbles y piscinas naturales.",
-            foto: "https://images.unsplash.com/photo-1518105779142-d975f22f1b0a?w=400"
-        });
-        await nuevo.save();
-        res.send("¡Destino guardado con éxito!");
-    } catch (err) {
-        res.status(500).send("Error: " + err.message);
-    }
-});
-
-//ruta para recibir datos desde el frontend y guardarlos en la base de datos (para el formulario)
-app.post('/api/destinos', async (req, res) => {
-    try {
-        const nuevoDestino = new Destino(req.body); // Recibe nombre, estado, descripcion, foto
+        const { nombre, estado, descripcion, foto } = req.body;
+        const nuevoDestino = new Destino({ nombre, estado, descripcion, foto });
         await nuevoDestino.save();
-        res.status(201).json({ mensaje: "Destino guardado con éxito" });
+        res.status(201).json({ mensaje: 'Destino guardado con éxito' });
     } catch (error) {
-        res.status(400).json({ error: "Error al guardar" });
+        res.status(400).json({ error: 'Error al guardar' });
     }
 });
 
-//ruta para eliminar un destino por su id (para el admin)
-app.delete('/api/destinos/:id', async (req, res) => {
+// Eliminar destino (solo admin)
+app.delete('/api/destinos/:id', verificarAdmin, async (req, res) => {
     try {
-        const id = req.params.id;
-        await Destino.findByIdAndDelete(id);
-        res.json({ mensaje: "Destino eliminado correctamente" });
+        await Destino.findByIdAndDelete(req.params.id);
+        res.json({ mensaje: 'Destino eliminado correctamente' });
     } catch (error) {
-        res.status(500).json({ error: "No se pudo eliminar el destino" });
+        res.status(500).json({ error: 'No se pudo eliminar el destino' });
     }
 });
 
-app.post('/api/registro', async (req, res) => {
+// Registro de usuario
+app.post('/api/registro', authLimiter, async (req, res) => {
     try {
         const { nombre, email, password } = req.body;
 
-        //verificar si el usuario ya existe
-        const existe = await Usuario.findOne({ email });
-        if (existe) {
-            return res.status(400).json({ error: "Este correo ya está registrado" });
+        if (!nombre || !email || !password) {
+            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+        }
+        if (password.length < 8) {
+            return res.status(400).json({ error: 'La contraseña debe tener al menos 8 caracteres' });
         }
 
-        //encriptar la contraseña (Hashing)
+        const existe = await Usuario.findOne({ email });
+        if (existe) {
+            return res.status(400).json({ error: 'Este correo ya está registrado' });
+        }
+
         const salt = await bcrypt.genSalt(10);
         const passwordHash = await bcrypt.hash(password, salt);
 
-        //guardar usuario con la clave secreta
-        const nuevoUsuario = new Usuario({
-            nombre,
-            email,
-            password: passwordHash
-        });
-
+        const nuevoUsuario = new Usuario({ nombre, email, password: passwordHash });
         await nuevoUsuario.save();
-        res.status(201).json({ mensaje: "¡Cuenta creada exitosamente!" });
-//respuesta de exito
+        res.status(201).json({ mensaje: '¡Cuenta creada exitosamente!' });
     } catch (error) {
-        res.status(500).json({ error: "Error interno del servidor" });
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
 
-//ruta para manejar el login de usuarios
-app.post('/api/login', async (req, res) => {
+// Login de usuario
+app.post('/api/login', authLimiter, async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        //vuscar al usuario
         const usuario = await Usuario.findOne({ email });
         if (!usuario) {
-            return res.status(400).json({ error: "El usuario no existe" });
+            return res.status(400).json({ error: 'Credenciales inválidas' });
         }
 
-        //comparar contrasena encriptada
         const passwordCorrecto = await bcrypt.compare(password, usuario.password);
         if (!passwordCorrecto) {
-            return res.status(400).json({ error: "Contraseña incorrecta" });
+            return res.status(400).json({ error: 'Credenciales inválidas' });
         }
 
-        //responder con esito
-        res.json({ 
-            mensaje: "Login exitoso", 
-            nombre: usuario.nombre 
-        });
+        const token = jwt.sign(
+            { id: usuario._id, nombre: usuario.nombre, rol: usuario.rol },
+            process.env.JWT_SECRET,
+            { expiresIn: '7d' }
+        );
 
+        res.json({ token, nombre: usuario.nombre, rol: usuario.rol });
     } catch (error) {
-        res.status(500).json({ error: "Error en el servidor" });
+        res.status(500).json({ error: 'Error en el servidor' });
     }
 });
 
-app.post('/api/login', async (req, res) => {
-    const { email, password } = req.body;
-    const usuario = await Usuario.findOne({ email });
-
-    if (usuario && await bcrypt.compare(password, usuario.password)) {
-        // Devolvemos el nombre que está en la base de datos
-        res.json({ nombre: usuario.nombre }); 
-    } else {
-        res.status(400).json({ error: "Credenciales inválidas" });
+// Ruta temporal para promover el primer admin — ELIMINAR DESPUÉS DE USAR
+app.post('/api/setup-admin', async (req, res) => {
+    try {
+        const { email, setupSecret } = req.body;
+        if (!setupSecret || setupSecret !== process.env.SETUP_SECRET) {
+            return res.status(403).json({ error: 'Clave incorrecta' });
+        }
+        const usuario = await Usuario.findOneAndUpdate(
+            { email },
+            { rol: 'admin' },
+            { new: true }
+        );
+        if (!usuario) return res.status(404).json({ error: 'Usuario no encontrado' });
+        res.json({ mensaje: `${usuario.email} ahora es admin` });
+    } catch (error) {
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 });
 
-//puerto de reicion de peticiones
+// Puerto
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Servidor en puerto ${PORT}`);
+    console.log(`Servidor en puerto ${PORT}`);
 });
